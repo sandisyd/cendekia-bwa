@@ -12,4 +12,6 @@ class Announcement extends Model
         "url",
         "is_active",
     ];
+
+    
 }
