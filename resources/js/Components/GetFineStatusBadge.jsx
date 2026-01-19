@@ -1,3 +1,4 @@
+import { FINEPAYMENTSTATUS } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 
 export default function GetFineStatusBadge({ status }) {
