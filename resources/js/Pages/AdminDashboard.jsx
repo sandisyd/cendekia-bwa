@@ -1,5 +1,5 @@
-import AppLayout from "@/Layouts/AppLayout";
+import AppLayout from '@/Layouts/AppLayout';
 
 export default function AdminDashboard() {
-  return <AppLayout title="Dashboard">Sedang testing</AppLayout>;
+    return <AppLayout title="Dashboard">Sedang testing</AppLayout>;
 }
