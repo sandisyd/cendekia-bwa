@@ -1,5 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
 import {
     DropdownMenu,
@@ -11,12 +11,14 @@ import {
 } from '@/Components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
 import { Toaster } from '@/Components/ui/sonner';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { IconLayoutSidebar } from '@tabler/icons-react';
 import Sidebar from './partials/Sidebar';
 import SidebarResponsive from './partials/SidebarResponsive';
 export default function AppLayout({ title, children }) {
+    const auth = usePage().props.auth.user;
+    const { url } = usePage();
     return (
         <div>
             <Head title={title} />
@@ -29,7 +31,7 @@ export default function AppLayout({ title, children }) {
                         </div>
                         <div className="flex-1">
                             {/* sidebar */}
-                            <Sidebar />
+                            <Sidebar url={url} auth={auth} />
                         </div>
                     </div>
                 </div>
@@ -52,16 +54,17 @@ export default function AppLayout({ title, children }) {
                                     </SheetDescription>
                                 </SheetHeader>
                                 {/* menu sidebar */}
-                                <SidebarResponsive />
+                                <SidebarResponsive url={url} auth={auth} />
                             </SheetContent>
                         </Sheet>
                         {/* dropdown */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="flex gap-x-2">
-                                    <span>Hi, Jhon Wick</span>
+                                    <span>Hi, {auth.name}</span>
                                     <Avatar>
-                                        <AvatarFallback>JW</AvatarFallback>
+                                        <AvatarImage src={auth.avatar} />
+                                        <AvatarFallback>{auth.name.substring(0, 1)}</AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
