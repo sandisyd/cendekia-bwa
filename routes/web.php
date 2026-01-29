@@ -18,7 +18,7 @@ use Inertia\Inertia;
 Route::redirect('/','login');
 
 Route::get('/admin-dashboard', fn() => inertia('AdminDashboard'));
-Route::controller(DashboardController::class)->middleware('auth','password.confirm')->group(fn()=> Route::get('/dashboard', 'index')->name(('dashboard')));
+Route::controller(DashboardController::class)->middleware('auth','verified')->group(fn()=> Route::get('/dashboard', 'index')->name(('dashboard')));
 
 
 Route::middleware('auth')->group(function () {
