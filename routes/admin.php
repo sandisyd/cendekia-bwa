@@ -10,6 +10,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function(){
         Route::post('categories/create','store')->name('admin.categories.store');
         Route::get('categories/edit/{category}','edit')->name('admin.categories.edit');
         Route::put('categories/edit/{category}','update')->name('admin.categories.update');
-        Route::delete('categories/destroy','destroy')->name('admin.categories.destroy');
+        Route::delete('categories/destroy/{category}','destroy')->name('admin.categories.destroy');
     });
 });
