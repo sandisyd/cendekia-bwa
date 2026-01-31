@@ -21,7 +21,7 @@ import { IconCategory, IconPencil, IconPlus, IconTrash } from '@tabler/icons-rea
 export default function Index(props) {
     return (
         <div className="flex w-full flex-col pb-32">
-            <div className="mb-8 flex flex-col items-start justify-between gap-y-4 sm:flex-row lg:items-center">
+            <div className="mb-8 flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
                 <HeaderTitle
                     title={props.page_settings.title}
                     subtitle={props.page_settings.subtitle}
@@ -34,7 +34,7 @@ export default function Index(props) {
                 </Button>
             </div>
             <Card>
-                <CardContent className="[&-td]:white-space-nowrap p-0 [&_td]:px-6 [&_th]:px-6">
+                <CardContent className="[&_td]:white-space-nowrap p-0 [&_td]:px-6 [&_th]:px-6">
                     <Table className="w-full">
                         <TableHeader>
                             <TableRow>
@@ -54,7 +54,7 @@ export default function Index(props) {
                                     <TableCell>{category.slug}</TableCell>
                                     <TableCell>
                                         <Avatar>
-                                            <AvatarImage src={category.avatar} />
+                                            <AvatarImage src={category.cover} />
                                             <AvatarFallback>{category.name.substring(0, 1)}</AvatarFallback>
                                         </Avatar>
                                     </TableCell>
