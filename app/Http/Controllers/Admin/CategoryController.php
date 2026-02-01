@@ -17,10 +17,14 @@ class CategoryController extends Controller
     use HasFile;
     public function index(): Response
     {
-        $categories = Category::query()->select(['id','name','slug','cover','created_at'])->get();
+        $categories = Category::query()->select(['id','name','slug','cover','created_at'])->paginate(10);
 
         return inertia('Admin/Categories/Index', [
-            'categories' => CategoryResource::collection($categories),
+            'categories' => CategoryResource::collection($categories)->additional([
+                'meta' => [
+                    'has_pages' => $categories->hasPages(),
+                ]
+        ]),
             'page_settings' => [
 
                 'title' => 'Kategori',
