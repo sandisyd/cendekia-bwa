@@ -681,6 +681,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category query()
+     * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category filter(array $filters) {@see App\Models\Category::scopeFilter()}
+     * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category sort(array $sorts) {@see App\Models\Category::scopeSort()}
      * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category select(mixed $columns)
      * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category selectSub(\Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder<mixed>|string $query, string $as)
      * @method static \Illuminate\Database\Eloquent\Builder<Category>|Category selectRaw(string $expression)
