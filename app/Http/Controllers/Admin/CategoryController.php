@@ -17,7 +17,10 @@ class CategoryController extends Controller
     use HasFile;
     public function index(): Response
     {
-        $categories = Category::query()->select(['id','name','slug','cover','created_at'])->paginate(10);
+        $categories = Category::query()->select(['id','name','slug','cover','created_at'])->when(request()->search, function($query, $value){
+            $query->whereAny(['name','slug'],'REGEXP', $value);
+        }, )
+        ->paginate(request()->load ?? 10)->withQueryString();
 
         return inertia('Admin/Categories/Index', [
             'categories' => CategoryResource::collection($categories)->additional([
@@ -29,6 +32,11 @@ class CategoryController extends Controller
 
                 'title' => 'Kategori',
                 'subtitle' => 'Menampilkan semua data kategori yang tersedia'
+            ],
+            'state' => [
+                'page' => request()->page ?? 1,
+                'search' => request()->search ?? '',
+                'load' => 10
             ]
         ]);
 

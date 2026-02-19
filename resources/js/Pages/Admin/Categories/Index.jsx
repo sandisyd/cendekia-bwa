@@ -12,17 +12,28 @@ import {
 } from '@/Components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
-import { Card, CardContent, CardFooter } from '@/Components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card';
+import { Input } from '@/Components/ui/input';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/Components/ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
+import { useFilter } from '@/hooks/UseFilter';
 import AppLayout from '@/Layouts/AppLayout';
 import { flashMessage } from '@/lib/utils';
 import { Link, router } from '@inertiajs/react';
 import { IconCategory, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function Index(props) {
-    const { data, meta } = props.categories;
+    const { data: categories, meta } = props.categories;
+    const [params, setParams] = useState(props.state);
+
+    useFilter({
+        route: route('admin.categories.index'),
+        values: params,
+        only: ['categories'],
+    });
     return (
         <div className="flex w-full flex-col pb-32">
             <div className="mb-8 flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
@@ -38,6 +49,28 @@ export default function Index(props) {
                 </Button>
             </div>
             <Card>
+                <CardHeader>
+                    <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-center">
+                        <Input
+                            className="w-full sm:w-1/4"
+                            placeholder="Search..."
+                            value={params?.search}
+                            onChange={(e) => setParams((prev) => ({ ...prev, search: e.target.value }))}
+                        />
+                        <Select value={params?.load} onValueChange={(e) => setParams({ ...params, load: e })}>
+                            <SelectTrigger className="w-full sm:w-24">
+                                <SelectValue placeholder="Load"></SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {[10, 25, 50, 75, 100].map((number, index) => (
+                                    <SelectItem key={index} value={number}>
+                                        {number}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </CardHeader>
                 <CardContent className="[&_td]:white-space-nowrap p-0 [&_td]:px-6 [&_th]:px-6">
                     <Table className="w-full">
                         <TableHeader>
@@ -51,7 +84,7 @@ export default function Index(props) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {data.map((category, index) => (
+                            {categories.map((category, index) => (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1 + (meta.current_page - 1) * meta.per_page}</TableCell>
                                     <TableCell>{category.name}</TableCell>
