@@ -246,18 +246,20 @@ export default function Index(props) {
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() =>
-                                // router.delete(
-                                //     route('admin.categories.destroy', [category]),
-                                //     {
-                                //         preserveScroll: true,
-                                //         preserveState: true,
-                                //         onSuccess: (s) => {
-                                //             const flash = flashMessage(s);
-                                //             if (flash) toast[flash.type](flash.message);
-                                //         },
-                                //     },
-                                // )
-                                console.log("Berhasil hapus data")
+                                router.delete(
+                                  route("admin.publishers.destroy", [
+                                    publisher,
+                                  ]),
+                                  {
+                                    preserveScroll: true,
+                                    preserveState: true,
+                                    onSuccess: (s) => {
+                                      const flash = flashMessage(s);
+                                      if (flash)
+                                        toast[flash.type](flash.message);
+                                    },
+                                  },
+                                )
                               }
                             >
                               Yes

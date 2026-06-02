@@ -108,14 +108,14 @@ export default function Create(props) {
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="phone">Nomor Handphone</Label>
-              <Textarea
+              <Input
                 name="phone"
                 id="phone"
-                type="text"
+                type="number"
                 placeholder="Masukkan Nomor HP..."
                 value={data.phone}
                 onChange={onHandleChange}
-              ></Textarea>
+              ></Input>
               {errors.phone && (
                 <InputError message={errors.phone} className="mt-2" />
               )}

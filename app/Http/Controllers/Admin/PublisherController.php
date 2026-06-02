@@ -77,4 +77,50 @@ class PublisherController extends Controller
             return back();
         }
     }
+
+    public function edit(Publisher $publisher): Response {
+        return inertia('Admin/Publishers/Edit',[
+            'page_settings' => [
+                'title' => 'Edit Penerbit',
+                'subtitle' => 'Edit penerbit disini',
+                'methods' => 'PUT',
+                'action' => route('admin.publishers.update', $publisher)
+            ],
+            'publisher' => $publisher
+        ]);
+    }
+
+    public function update(Publisher $publisher, PublisherRequest $req): RedirectResponse {
+        try {
+            //code...
+            $publisher -> update([
+                'name' => $name = $req->name,
+                'slug' => $name !== $publisher->name ? str()->lower(str()->slug($name).str()->random(4)) : $publisher->slug,
+                'address'=> $req->address,
+                'email'=>$req->email,
+                'phone'=>$req->phone,
+                'logo'=> $this->updateFile($req, $publisher, 'logo', 'publishers')
+            ]);
+            flashMessage(MessageType::UPDATED->message('Penerbit'));
+            return to_route('admin.publishers.index');
+        } catch (\Throwable $th) {
+            //throw $th;
+            flashMessage(MessageType::ERROR->message(error: $th->getMessage()), 'error');
+            return back();
+        }
+    }
+
+    public function destroy(Publisher $publisher): RedirectResponse {
+        try {
+            //code...
+            $this->deleteFile($publisher, 'logo');
+            $publisher->forceDelete();
+            flashMessage(MessageType::DELETED->message('Penerbit'));
+            return to_route('admin.publishers.index');
+        } catch (\Throwable $th) {
+            //throw $th;
+            flashMessage(MessageType::ERROR->message(error: $th->getMessage()), 'error');
+            return back();
+        }
+    }
 }
