@@ -5,19 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\MessageType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
+use App\Http\Requests\Admin\PublisherRequest;
 use App\Http\Resources\Admin\PublisherResource;
+use App\Traits\HasFile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Publisher;
 use Inertia\Response;
 
 
+
 class PublisherController extends Controller
 {
     //
+    use HasFile;
     public function index(): Response {
         $publishers = Publisher::query()->select(['id','name','slug','address','email','phone','created_at'])
         ->filter(request()->only(['search']))
+        ->latest('created_at')
         ->sorting(request()->only(['field','direction']))
         ->paginate(request()->load ?? 10)->withQueryString();
 
@@ -40,7 +45,7 @@ class PublisherController extends Controller
     }
 
     public function create(): Response {
-        $publishers = Publisher::query()->select(['id', 'name', 'slug', 'address', 'email', 'phone', 'created_at'])->get();
+        // $publishers = Publisher::query()->select(['id', 'name', 'slug', 'address', 'email', 'phone', 'created_at'])->get();
 
         return inertia('Admin/Publishers/Create', [
             'page_settings' => [
@@ -52,7 +57,7 @@ class PublisherController extends Controller
         ]);
     }
 
-    public function store(AdminRequest $request): RedirectResponse {
+    public function store(PublisherRequest $request): RedirectResponse {
         try {
             //code...
             Publisher::create([
@@ -60,7 +65,8 @@ class PublisherController extends Controller
                 'slug' => str()->lower(str()->slug($name). str()->random(4)),
                 'address' =>  $request->address,
                 'email' => $request->email,
-                'phone' => $request->phone
+                'phone' => $request->phone,
+                'logo' => $this->uploadFile($request, 'logo','publishers')
 
             ]);
             flashMessage(MessageType::CREATED->message('Penerbit'));

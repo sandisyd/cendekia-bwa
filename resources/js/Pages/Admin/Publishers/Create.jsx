@@ -8,16 +8,22 @@ import { Textarea } from "@/Components/ui/textarea";
 import AppLayout from "@/Layouts/AppLayout";
 import { flashMessage } from "@/lib/utils";
 import { Link, useForm } from "@inertiajs/react";
-import { IconArrowBack, IconCategory } from "@tabler/icons-react";
+import {
+  IconArrowBack,
+  IconBuildingCommunity,
+  IconCategory,
+} from "@tabler/icons-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 
 export default function Create(props) {
+  const fileInputLogo = useRef(null);
   const { data, setData, reset, post, processing, errors } = useForm({
     name: "",
     address: "",
     email: "",
     phone: "",
+    logo: null,
     _method: props.page_settings.methods,
   });
 
@@ -36,11 +42,9 @@ export default function Create(props) {
     });
   };
 
-  const inputFileRef = useRef(null);
-
   const onHandleReset = () => {
     reset();
-    inputFileRef.current.value = null;
+    fileInputLogo.current.value = null;
   };
   return (
     <div className="flex w-full flex-col pb-32">
@@ -48,10 +52,10 @@ export default function Create(props) {
         <HeaderTitle
           title={props.page_settings.title}
           subtitle={props.page_settings.subtitle}
-          icon={IconCategory}
+          icon={IconBuildingCommunity}
         />
         <Button variant="orange" size="lg" asChild>
-          <Link href={route("admin.categories.index")}>
+          <Link href={route("admin.publishers.index")}>
             <IconArrowBack className="size-4" /> Kembali
           </Link>
         </Button>
@@ -114,6 +118,19 @@ export default function Create(props) {
               ></Textarea>
               {errors.phone && (
                 <InputError message={errors.phone} className="mt-2" />
+              )}
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="logo">Logo</Label>
+              <Input
+                name="logo"
+                id="logo"
+                type="file"
+                onChange={(e) => setData(e.target.name, e.target.files[0])}
+                ref={fileInputLogo}
+              />
+              {errors.logo && (
+                <InputError message={errors.logo} className="mt-2" />
               )}
             </div>
 
