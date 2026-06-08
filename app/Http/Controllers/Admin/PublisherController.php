@@ -114,7 +114,7 @@ class PublisherController extends Controller
         try {
             //code...
             $this->deleteFile($publisher, 'logo');
-            $publisher->forceDelete();
+            $publisher->delete();
             flashMessage(MessageType::DELETED->message('Penerbit'));
             return to_route('admin.publishers.index');
         } catch (\Throwable $th) {
