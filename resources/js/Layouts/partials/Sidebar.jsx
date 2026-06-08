@@ -55,7 +55,12 @@ export default function Sidebar({ url, auth }) {
         title="Penerbit"
         icon={IconBuildingCommunity}
       />
-      <NavLink url="#" title="Buku" icon={IconBooks} />
+      <NavLink
+        url={route("admin.books.index")}
+        active={url.startsWith("/admin/books")}
+        title="Buku"
+        icon={IconBooks}
+      />
       <NavLink url="#" title="Pengguna" icon={IconUsersGroup} />
       <NavLink
         url="#"
