@@ -69,7 +69,7 @@ class BookController extends Controller
     public function store (BookRequest $r): RedirectResponse {
         try {
             //code...
-            Book::create([
+             Book::create([
                 'book_code' => str()->random(6),
                 'title'=> $title = $r->title,
                 'slug'=> str()->lower(str()->slug($title). str()->random(4)),
@@ -87,6 +87,8 @@ class BookController extends Controller
 
 
             ]);
+
+            
             flashMessage(MessageType::CREATED->message('Buku'));
             return to_route('admin.books.index');
         } catch (\Throwable $th) {
