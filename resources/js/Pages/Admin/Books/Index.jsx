@@ -59,6 +59,7 @@ import { toast } from "sonner";
 export default function Index(props) {
   const { data: books, meta } = props.books;
   const [params, setParams] = useState(props.state);
+  console.log("cek buku ", books);
   const onSortable = (field) => {
     setParams({
       ...params,
@@ -308,7 +309,7 @@ export default function Index(props) {
                   <TableCell>{book.book_code}</TableCell>
                   <TableCell>{book.title}</TableCell>
                   <TableCell>{book.author}</TableCell>
-                  <TableCell>{book.stock}</TableCell>
+                  <TableCell>{book.stock.total}</TableCell>
                   <TableCell>{book.publication_year}</TableCell>
                   <TableCell>{book.isbn}</TableCell>
                   <TableCell>{book.language}</TableCell>

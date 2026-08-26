@@ -13,7 +13,7 @@ class BookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -39,7 +39,7 @@ class BookRequest extends FormRequest
             ],
             'publication_year'=> [
                 'required',
-                'number',
+                'numeric',
                 'integer'
             ],
             'isbn'=>[
@@ -60,7 +60,7 @@ class BookRequest extends FormRequest
                 'numeric'
             ],
             'cover'=>[
-                'required',
+                'nullable',
                 'mimes:png,jpg,jpeg,webp',
                 'max:2048'
             ],
