@@ -348,8 +348,8 @@ export default function Index(props) {
                               Apakah Anda Yakin ?
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                              Tindakan ini akan menghapus data kategori secara
-                              permannen
+                              Tindakan ini akan menghapus data buku secara
+                              permanen
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -357,7 +357,7 @@ export default function Index(props) {
                             <AlertDialogAction
                               onClick={() =>
                                 router.delete(
-                                  route("admin.books.destroy", [category]),
+                                  route("admin.books.destroy", [book]),
                                   {
                                     preserveScroll: true,
                                     preserveState: true,

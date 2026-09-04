@@ -24,22 +24,21 @@ import {
   SelectValue,
 } from "@/Components/ui/select";
 
-export default function Create(props) {
+export default function Edit(props) {
   const fileInputCover = useRef(null);
   const { data, setData, reset, post, processing, errors } = useForm({
-    title: "",
-    author: "",
-    publication_year: null,
-    isbn: "",
-    language: null,
-    synopsis: "",
-    number_of_pages: "",
+    title: props.book.title ?? "",
+    author: props.book.author ?? "",
+    publication_year: props.book.publication_year ?? null,
+    isbn: props.book.isbn ?? "",
+    language: props.book.language ?? null,
+    synopsis: props.book.synopsis ?? "",
+    number_of_pages: props.book.number_of_pages ?? "",
     cover: null,
-    price: 0,
-    category_id: null,
-    publisher_id: null,
-    total: 0,
-    _method: props.page_settings.method,
+    price: props.book.price ?? 0,
+    category_id: props.book.category_id ?? null,
+    publisher_id: props.book.publisher_id ?? null,
+    _method: props.page_settings.methods,
   });
 
   const onHandleChange = (e) => setData(e.target.name, e.target.value);
@@ -285,20 +284,6 @@ export default function Create(props) {
                 <InputError message={errors.language} className="mt-2" />
               )}
             </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="total">Stock</Label>
-              <Input
-                name="total"
-                id="total"
-                type="text"
-                placeholder="Masukkan Total..."
-                value={data.total}
-                onChange={onHandleChange}
-              />
-              {errors.total && (
-                <InputError message={errors.total} className="mt-2" />
-              )}
-            </div>
 
             <div className="flex justify-end gap-x-2">
               <Button
@@ -325,6 +310,6 @@ export default function Create(props) {
   );
 }
 
-Create.layout = (page) => (
+Edit.layout = (page) => (
   <AppLayout children={page} title={page.props.page_settings.title} />
 );

@@ -6,6 +6,7 @@ use App\Enums\BookLanguage;
 use App\Enums\BookStatus;
 use App\Enums\MessageType;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\BookRequest;
 use App\Http\Resources\Admin\BookResource;
 use App\Models\Book;
@@ -48,7 +49,7 @@ class BookController extends Controller
             'page_settings'=>[
                 'title'=>'Tambah Buku',
                 'subtitle'=>'Buat buku baru disini',
-                'method'=>'POST',
+                'methods'=>'POST',
                 'action'=>route('admin.books.store')
             ],
             'page_data'=>[
@@ -118,5 +119,78 @@ class BookController extends Controller
         $ordering = str_pad($order, 4, '0' . STR_PAD_LEFT);
 
         return 'CA' . $publication_year . '4' . str()->slug($category->name) . '6' . $ordering;
+    }
+
+
+    public function edit(Book $book): Response {
+        return inertia('Admin/Books/Edit', [
+            'page_settings' => [
+                'title' => 'Edit Buku',
+                'subtitle' => 'Edit buku disini',
+                'methods' => 'PUT',
+                'action' => route('admin.books.update', $book)
+            ],
+            'book' => $book,
+            'page_data'=>[
+                'publicationYears' => range(2000, now()->year),
+                'languages' => BookLanguage::options(),
+                'categories' => Category::query()->select(['id','name'])->get()->map(fn($item)=>[
+                    'value'=>$item->id,
+                    'label'=>$item->name
+                ]),
+                'publishers' => Publisher::query()->select(['id','name'])->get()->map(fn($item)=>[
+                    'value'=>$item->id,
+                    'label'=>$item->name
+                ]),
+            ]
+
+        ]);
+    }
+
+    public function update(Book $book, BookRequest $r): RedirectResponse {
+        try {
+            //code...
+             $book->update([
+                'book_code' => $this->bookCOde($r->publication_year, $r->category_id),
+                'title'=> $title = $r->title,
+                'slug'=> $title !== $book->slug ? str()->lower(str()->slug($title). str()->random(4)) : $book->slug,
+                'author'=> $r->author,
+                'publication_year'=>$r->publication_year,
+                'isbn'=>$r->isbn,
+                'language'=>$r->language,
+                'synopsis'=>$r->synopsis,
+                'number_of_pages'=>$r->number_of_pages,
+                'status'=>$r->total > 0 ? BookStatus::AVAILABLE->value : BookStatus::UNAVAILABLE->value,
+                'cover'=>$this->updateFile($r, $book, 'cover','books'),
+                'price'=>$r->price,
+                'category_id'=>$r->category_id,
+                'publisher_id'=>$r->publisher_id
+
+
+            ]);
+
+            
+            flashMessage(MessageType::UPDATED->message('Buku'));
+            return to_route('admin.books.index');
+        } catch (\Throwable $th) {
+            //throw $th;
+            flashMessage(MessageType::ERROR->message(error: $th->getMessage()), 'error');
+            return back();
+        }
+    }
+
+    public function destroy(Book $book): RedirectResponse
+    {
+        try {
+            //code...
+            $this->deleteFile($book, 'cover');
+            $book->forceDelete();
+            flashMessage(MessageType::DELETED->message('Buku'));
+            return to_route('admin.books.index');
+        } catch (\Throwable $th) {
+            //throw $th;
+             flashMessage(MessageType::ERROR->message(error: $th->getMessage(), ), 'error');
+            return back();
+        }
     }
 }
