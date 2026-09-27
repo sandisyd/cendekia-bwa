@@ -48,7 +48,7 @@ class UserRequest extends FormRequest
                 'max:255',
                 'confirmed'
             ]),
-            'phone'=>[
+            'phone_number'=>[
                 'nullable',
                 'min:10',
                 'max:15'
@@ -78,7 +78,7 @@ class UserRequest extends FormRequest
             'name'=> 'Nama',
             'email' => 'Email',
             'password'=>'Password',
-            'phone'=>'Nomor Handphone',
+            'phone_number'=>'Nomor Handphone',
             'avatar'=>'Avatar',
             'date_of_birth'=>'Tanggal Lahir',
             'address'=>'Alamat'

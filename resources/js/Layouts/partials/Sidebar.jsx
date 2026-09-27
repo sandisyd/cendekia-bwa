@@ -61,7 +61,12 @@ export default function Sidebar({ url, auth }) {
         title="Buku"
         icon={IconBooks}
       />
-      <NavLink url="#" title="Pengguna" icon={IconUsersGroup} />
+      <NavLink
+        url={route("admin.users.index")}
+        active={url.startsWith("/admin/users")}
+        title="Pengguna"
+        icon={IconUsersGroup}
+      />
       <NavLink
         url="#"
         title="Pengaturan Denda"

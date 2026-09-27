@@ -20,10 +20,10 @@ class UserResource extends JsonResource
             'name'=>$this->name,
             'username'=>$this->username,
             'email'=>$this->email,
-            'phone'=>$this->phone,
+            'phone_number'=>$this->phone,
             'avatar'=>$this->avatar ? Storage::url($this->avatar) : null,
             'gender'=>$this->gender,
-            'date_of_birth'=>$this->date_of_birth->format('d M Y'),
+            'date_of_birth'=>$this->date_of_birth ? $this->date_of_birth->format('d M Y') : null,
             'address'=>$this->address,
             'created_at'=>$this->created_at->format('d M Y')
         ];
